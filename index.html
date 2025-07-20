@@ -21,7 +21,13 @@
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       text-align: center;
-      width: 320px;
+      width: 340px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #444;
     }
     input {
       width: 80%;
@@ -30,6 +36,7 @@
       border: 1px solid #ccc;
       border-radius: 6px;
       font-size: 1em;
+      text-align: center;
     }
     h2, h3 {
       margin-top: 15px;
@@ -45,7 +52,8 @@
 <body>
   <div class="container">
     <h1>Live Income Counter</h1>
-    <input type="number" id="annualIncome" placeholder="Enter annual income ($)">
+    <label for="annualIncome">Enter your annual income ($):</label>
+    <input type="number" id="annualIncome" placeholder="e.g., 75000">
     <h2 id="rate">$0.00 per second</h2>
     <h3>Total earned since opening:</h3>
     <div class="earned" id="earned">$0.00</div>
