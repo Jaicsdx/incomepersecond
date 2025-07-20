@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Income Counter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 320px;
+    }
+    input {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1em;
+    }
+    h2, h3 {
+      margin-top: 15px;
+      color: #333;
+    }
+    .earned {
+      font-size: 2em;
+      color: #28a745;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Live Income Counter</h1>
+    <input type="number" id="annualIncome" placeholder="Enter annual income ($)">
+    <h2 id="rate">$0.00 per second</h2>
+    <h3>Total earned since opening:</h3>
+    <div class="earned" id="earned">$0.00</div>
+  </div>
+
+  <script>
+    const input = document.getElementById("annualIncome");
+    const rateDisplay = document.getElementById("rate");
+    const earnedDisplay = document.getElementById("earned");
+    let perSecondRate = 0;
+    let earned = 0;
+    let lastTime = Date.now();
+
+    input.addEventListener("input", () => {
+      const annual = parseFloat(input.value);
+      if (!isNaN(annual) && annual > 0) {
+        perSecondRate = annual / (365 * 24 * 60 * 60);
+        earned = 0;
+        lastTime = Date.now();
+        rateDisplay.textContent = `$${perSecondRate.toFixed(6)} per second`;
+      } else {
+        perSecondRate = 0;
+        earned = 0;
+        rateDisplay.textContent = `$0.00 per second`;
+        earnedDisplay.textContent = `$0.00`;
+      }
+    });
+
+    function update() {
+      const now = Date.now();
+      const delta = (now - lastTime) / 1000;
+      earned += perSecondRate * delta;
+      lastTime = now;
+
+      earnedDisplay.textContent = `$${earned.toFixed(2)}`;
+      requestAnimationFrame(update);
+    }
+    update();
+  </script>
+</body>
+</html>
