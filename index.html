@@ -60,7 +60,7 @@
     <label for="annualIncome">Enter your annual income ($):</label>
     <input type="number" id="annualIncome" placeholder="e.g., 75000">
     <h2 id="rate">$0.00 per second</h2>
-    <h3>Total earned since opening:</h3>
+    <h3>Total earned since starting:</h3>
     <div class="earned" id="earned">$0.00</div>
     <div class="timer" id="timer">01:00</div>
   </div>
@@ -74,7 +74,8 @@
     let perSecondRate = 0;
     let earned = 0;
     let lastTime = Date.now();
-    let timer = 60; // 1 minute countdown
+    let timer = 60; 
+    let clockRunning = false;
 
     input.addEventListener("input", () => {
       const annual = parseFloat(input.value);
@@ -83,37 +84,5 @@
         earned = 0;
         lastTime = Date.now();
         timer = 60; // reset timer
-        rateDisplay.textContent = `$${perSecondRate.toFixed(6)} per second`;
-      } else {
-        perSecondRate = 0;
-        earned = 0;
-        rateDisplay.textContent = `$0.00 per second`;
-        earnedDisplay.textContent = `$0.00`;
-        timer = 60;
-        timerDisplay.textContent = "01:00";
-      }
-    });
-
-    function update() {
-      const now = Date.now();
-      const delta = (now - lastTime) / 1000;
-      earned += perSecondRate * delta;
-      lastTime = now;
-
-      earnedDisplay.textContent = `$${earned.toFixed(2)}`;
-
-      // update 1-minute countdown
-      if (timer > 0) {
-        timer -= delta;
-        if (timer < 0) timer = 0;
-        const mins = Math.floor(timer / 60);
-        const secs = Math.floor(timer % 60).toString().padStart(2, '0');
-        timerDisplay.textContent = `0${mins}:${secs}`;
-      }
-
-      requestAnimationFrame(update);
-    }
-    update();
-  </script>
-</body>
-</html>
+        clockRunning = true;
+        rateDisplay.textContent =
